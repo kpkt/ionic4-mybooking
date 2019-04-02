@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>New Booking</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="room" (ngSubmit)="doBooking(room.value)">
+    <ion-list>
+      <ion-item>
+        <ion-label>Rooms</ion-label>
+        <ion-select formControlName="room_id" [interfaceOptions]="{header: 'Available rooms for booking'}"
+          interface="action-sheet" placeholder="Select One">
+          <ion-select-option *ngFor="let room of rooms" value="{{room.value}}">{{room.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ng-container *ngFor="let validation of validation_messages.room_id">
+        <div class="error_message" *ngIf="room.get('room_id').hasError(validation.type) && (room.get('room_id').dirty || room.get('room_id').touched)">
+          {{validation.message}}
+        </div>
+      </ng-container>
+      <ion-item>
+        <ion-label>Equipments</ion-label>
+        <ion-select class="equipments" formControlName="equipment_id" multiple="true" placeholder="Select One or More">
+          <ion-select-option *ngFor="let equipment of equipments" [disabled]="equipment.status == 1 ? false:true"
+            value="{{equipment.value}}">{{equipment.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime formControlName="start" placeholder="Select Date" display-format="DD-MM-YYYY"
+          picker-format="D MMM YYYY"></ion-datetime>
+      </ion-item>
+      <ng-container *ngFor="let validation of validation_messages.start">
+        <div class="error_message" *ngIf="room.get('start').hasError(validation.type) && (room.get('start').dirty || room.get('start').touched)">
+          {{validation.message}}
+        </div>
+      </ng-container>
+      <ion-item>
+        <ion-label>End Date</ion-label>
+        <ion-datetime formControlName="end" placeholder="Select Date" display-format="DD-MM-YYYY"
+          picker-format="D MMM YYYY"></ion-datetime>
+      </ion-item>
+      <ng-container *ngFor="let validation of validation_messages.end">
+        <div class="error_message" *ngIf="room.get('end').hasError(validation.type) && (room.get('end').dirty || room.get('end').touched)">
+          {{validation.message}}
+        </div>
+      </ng-container>
+      <ion-item>
+        <ion-label position="fixed">Audience</ion-label>
+        <ion-input placeholder="Number" text-right type="number" formControlName="attendees"></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let validation of validation_messages.attendees">
+        <div class="error_message"
+          *ngIf="room.get('attendees').hasError(validation.type) && (room.get('attendees').dirty || room.get('attendees').touched)">
+          {{validation.message}}
+        </div>
+      </ng-container>
+      <ion-item>
+        <ion-label position="stacked">Notes</ion-label>
+        <ion-textarea rows="6" placeholder="Some booking notes to admin" formControlName="notes"></ion-textarea>
+      </ion-item>
+      <ng-container *ngFor="let validation of validation_messages.notes">
+        <div class="error_message"
+          *ngIf="room.get('notes').hasError(validation.type) && (room.get('notes').dirty || room.get('notes').touched)">
+          {{validation.message}}
+        </div>
+      </ng-container>
+
+    </ion-list>
+    <div padding>
+      {{room.valid}}
+      <ion-button type="submit" [disabled]="!room.valid" color="dark" expand="full">Submit</ion-button>
+    </div>
+  </form>
+</ion-content>

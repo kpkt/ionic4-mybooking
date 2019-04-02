@@ -1,0 +1,23 @@
+<ion-header>
+  <!-- https://ionicframework.com/docs/theming/basics#colors -->
+  <ion-toolbar color="tertiary">
+      <ion-buttons slot="end">
+          <ion-button *ngIf="client.name == ''" [routerLink]="'/profile/' + client.email" routerDirection="forward">
+            <ion-icon slot="icon-only" name="contact"></ion-icon>
+          </ion-button>      
+    </ion-buttons>
+    <ion-title>My Booking</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>  
+  <div *ngIf="client.name == ''">
+    <h2 text-center text-uppercase margin-bottom>User must register before make a booking</h2>
+    <ion-button (click)="openRegister()" color="tertiary" expand="block">Register</ion-button>
+  </div>
+  <div *ngIf="client.name != ''">
+      <h2 text-center text-uppercase margin-bottom>Welcome!!!</h2>
+      <p text-center>{{client.name}}</p>
+    <ion-button *ngIf="client" [routerLink]="'/booking'" color="tertiary" expand="block">Booking</ion-button>
+  </div>
+</ion-content>
